@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# Demo: Package Imports
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a demo to show how to use the native [↗ imports](https://nodejs.org/api/packages.html#subpath-imports) of `package.json`.
 
-Currently, two official plugins are available:
+1. Set up imports in [`package.json`](./package.json):
+   ```json
+   {
+      ...
+      "imports": {
+         "#lib/*": "./src/lib/*",
+         "#app/*": "./src/app/*",
+         "#assets/*": "./src/assets/*"
+      },
+      ...
+   }
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. Use them for example in [`App.tsx`](./src/app/App.tsx):
+   ```ts
+   import reactLogo from '#assets/react.svg'
+   import viteLogo from '/vite.svg'
+   import './App.css'
+   import { Counter } from '#lib/counter'
+   ```
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+That is it. Native aliases.  
+To try it out:
+1. clone this repo
+2. `npm install` or `yarn install` or `pnpm install` (does not matter)
+3. `npm run dev`
+4. open <http://localhost:5174/> 
+5. see that the counter component is there and usable
