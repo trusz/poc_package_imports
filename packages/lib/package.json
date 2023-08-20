@@ -1,17 +1,25 @@
 {
-  "name": "lib",
+  "name": "@poc_package_imports/lib",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:watch": "tsc && vite build --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "imports": {
+    "#app/*": "./src/app/*",
+    "#comps/*": "./src/comps/*",
+    "#_comps/*": "./src/comps/*",
+    "#assets/*": "./src/assets/*"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
