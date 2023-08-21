@@ -1,35 +1,64 @@
 # Demo: Package Imports (with Workspaces)
 
-This is a demo to show how to use the native [↗ imports](https://nodejs.org/api/packages.html#subpath-imports) of `package.json`.
+This is a demo to show how to use the native [↗ imports](https://nodejs.org/api/packages.html#subpath-imports) of `package.json`
+with a workspace setup.
+
+The aliases are working as expected in both built version and 
+directly linked source version of the `lib`.
+
+Try out by running:
+
+```sh
+make run
+```
+
+## Noteworthy Points
 
 1. We have workspaces set up in [`package.json`](./package.json)
-
-1. Set up imports in [`package.json`](./package.json):
    ```json
-   {
-      ...
-      "imports": {
-         "#lib/*": "./src/lib/*",
-         "#app/*": "./src/app/*",
-         "#assets/*": "./src/assets/*"
-      },
-      ...
+   ...
+   "workspaces": [
+      "packages/app",
+      "packages/lib"
+   ],
+   ...
+   ```
+
+2. The two packages, `app` and `lib`
+   ```txt
+   └── packages
+       ├── app
+       └── lib
+   ```
+
+3. `app` depends on `lib`; [`package.json`](./package.json):
+   ```json
+   dependencies: {
+      "@poc_package_imports/lib": "*",
    }
    ```
 
-2. Use them for example in [`App.tsx`](./src/app/App.tsx):
+4. `lib` uses aliases in [`index.ts`](./packages/lib/src/index.ts)
    ```ts
-   import reactLogo from '#assets/react.svg'
-   import viteLogo from '/vite.svg'
-   import './App.css'
-   import { Counter } from '#lib/counter'
+   export * from "#app/App.tsx"
+   ```
+
+5. we don't include react with the built library: [`vite.config.ts`](./packages/lib/vite.config.ts)
+   ```ts
+   rollupOptions: {
+      external: ['react', 'react-dom'],
+   },
+   ```
+
+6. `app` imports the `App` component from `lib`; [`main.tsx`](./packages/app/src/main.tsx)
+   ```ts
+   import { App } from "@poc_package_imports/lib"
    ```
 
 
-That is it. Native aliases.  
-To try it out:
-1. clone this repo
-2. `npm install` or `yarn install` or `pnpm install` (does not matter)
-3. `npm run dev`
-4. open <http://localhost:5174/> 
-5. see that the counter component is there and usable
+---
+
+#### Issues
+
+- for some reason the lib does not produces a TypeScript declaration, but 
+  everything works still
