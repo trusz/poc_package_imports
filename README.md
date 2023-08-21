@@ -16,12 +16,10 @@ make run
 
 1. We have workspaces set up in [`package.json`](./package.json)
    ```json
-   ...
    "workspaces": [
       "packages/app",
       "packages/lib"
    ],
-   ...
    ```
 
 2. The two packages, `app` and `lib`
@@ -33,7 +31,7 @@ make run
 
 3. `app` depends on `lib`; [`package.json`](./package.json):
    ```json
-   dependencies: {
+   "dependencies": {
       "@poc_package_imports/lib": "*",
    }
    ```
